@@ -24,6 +24,12 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float zoomingRotateSpeed = 1f;
     [SerializeField] private float normalRotateSpeed = 3f;
 
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform instantiateTransform;
+
+    [SerializeField] private int bullets = 5;
+    [SerializeField] private bool isReloading = false;
+    
     void Update()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -45,6 +51,25 @@ public class CharacterController : MonoBehaviour
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
         }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isReloading && bullets > 0)
+        {
+            RaycastHit hit;
+            
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 1000f)) 
+            {
+                GameObject newBall = Instantiate(bulletPrefab, instantiateTransform.position, transform.rotation);
+                newBall.GetComponent<Rigidbody>().velocity = (hit.point - instantiateTransform.position).normalized * 50f;
+            }
+
+            bullets--;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R) && !isReloading)
+        {
+            isReloading = true;
+            Invoke("FinishReloading", 2f);
+        }
         
         if (Input.GetKey(KeyCode.W)) characterController.Move(transform.forward * (Time.deltaTime * currentSpeed));
         if (Input.GetKey(KeyCode.S)) characterController.Move(transform.forward * (Time.deltaTime * -currentSpeed));
@@ -61,5 +86,11 @@ public class CharacterController : MonoBehaviour
         
         playerVelocity.y += gravityValue * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
+    }
+
+    private void FinishReloading()
+    {
+        isReloading = false;
+        bullets = 5;
     }
 }
