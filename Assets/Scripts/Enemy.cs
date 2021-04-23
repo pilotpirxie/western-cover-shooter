@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
 
     [SerializeField] private float hp;
+    [SerializeField] private int maxBullets = 5;
     [SerializeField] private int bullets = 5;
     
     [SerializeField] private bool isReloading = false; 
@@ -15,6 +13,7 @@ public class Enemy : MonoBehaviour
     
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform instantiateTransform;
+    [SerializeField] private float shootInterval = 0.25f;
     
     private void Awake()
     {
@@ -23,7 +22,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("Shoot", 1f, 1f);
+        InvokeRepeating("Shoot", 1, shootInterval + Random.Range(-0.1f, 0.25f));
     }
 
     private void OnCollisionEnter(Collision other)
@@ -49,14 +48,17 @@ public class Enemy : MonoBehaviour
 
     private void Shoot()
     {
-        if (bullets > 0)
+        if (bullets > 0 && Vector3.Distance(player.transform.position, gameObject.transform.position) < shootRadius)
         {
             RaycastHit hit;
+
+            Vector3 target = player.transform.position + new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(0.25f, 1.5f), Random.Range(-0.75f, 0.75f));
             
-            if (Physics.Raycast(gameObject.transform.position, (player.transform.position - gameObject.transform.position), out hit, 1000f)) 
+            if (Physics.Raycast(instantiateTransform.position, (target - instantiateTransform.position), out hit, 1000f)) 
             {
                 GameObject newBall = Instantiate(bulletPrefab, instantiateTransform.position, transform.rotation);
-                newBall.GetComponent<Rigidbody>().velocity = (hit.point - instantiateTransform.position).normalized * 25f;
+                newBall.transform.LookAt(target);
+                newBall.GetComponent<Rigidbody>().velocity = (hit.point - instantiateTransform.position).normalized * 50f;
             }
             
             bullets--;
@@ -66,7 +68,7 @@ public class Enemy : MonoBehaviour
             if (!isReloading)
             {
                 isReloading = true;
-                Invoke("FinishReloading", 2f);
+                Invoke("FinishReloading", 3f);
             }
         }
     }
@@ -74,6 +76,6 @@ public class Enemy : MonoBehaviour
     private void FinishReloading()
     {
         isReloading = false;
-        bullets = 5;
+        bullets = maxBullets;
     }
 }

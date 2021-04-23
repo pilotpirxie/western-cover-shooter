@@ -430,5 +430,6 @@ MonoBehaviour:
   normalRotateSpeed: 3
   bulletPrefab: {fileID: 3182478390216491216, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
   instantiateTransform: {fileID: 5868345156022119892}
+  hp: 3
   bullets: 5
   isReloading: 0

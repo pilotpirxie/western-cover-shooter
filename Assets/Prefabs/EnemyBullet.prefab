@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3161201784846941275, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161201784846941275, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3182478390216491216, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
       propertyPath: m_Name
       value: EnemyBullet
@@ -58,6 +66,18 @@ PrefabInstance:
     - target: {fileID: 3182478390216491220, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3182478390216491223, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
+      propertyPath: m_Size.x
+      value: 0.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 3182478390216491223, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
+      propertyPath: m_Size.y
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 3182478390216491223, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
+      propertyPath: m_Size.z
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}

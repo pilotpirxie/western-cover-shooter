@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class MainCharacterController : MonoBehaviour
 {
     [SerializeField] private UnityEngine.CharacterController characterController;
     
@@ -19,7 +20,6 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private Vector2 rotation = new Vector2 (0, 0);
     
-    
     [SerializeField] private float currentRotateSpeed;
     [SerializeField] private float zoomingRotateSpeed = 1f;
     [SerializeField] private float normalRotateSpeed = 3f;
@@ -27,6 +27,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform instantiateTransform;
 
+    [SerializeField] private int hp = 3;
+    [SerializeField] private int maxBullets = 5;
     [SerializeField] private int bullets = 5;
     [SerializeField] private bool isReloading = false;
     
@@ -36,8 +38,8 @@ public class CharacterController : MonoBehaviour
         Cursor.visible = false;
         
         rotation.y += Input.GetAxis ("Mouse X") * currentRotateSpeed;
-        rotation.x += rotation.x - Input.GetAxis ("Mouse Y") * currentRotateSpeed / 1.5f > -35f 
-            && rotation.x - Input.GetAxis ("Mouse Y") * currentRotateSpeed / 1.5f < 35f 
+        rotation.x += rotation.x - Input.GetAxis ("Mouse Y") * currentRotateSpeed / 1.5f > -45f 
+            && rotation.x - Input.GetAxis ("Mouse Y") * currentRotateSpeed / 1.5f < 45f 
             ? -Input.GetAxis ("Mouse Y") * currentRotateSpeed / 1.5f
             : 0f;
         transform.eulerAngles = rotation;
@@ -68,7 +70,7 @@ public class CharacterController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) && !isReloading)
         {
             isReloading = true;
-            Invoke("FinishReloading", 2f);
+            Invoke("FinishReloading", 3f);
         }
         
         if (Input.GetKey(KeyCode.W)) characterController.Move(transform.forward * (Time.deltaTime * currentSpeed));
@@ -91,6 +93,19 @@ public class CharacterController : MonoBehaviour
     private void FinishReloading()
     {
         isReloading = false;
-        bullets = 5;
+        bullets = maxBullets;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("EnemyBullet"))
+        {
+            hp--;
+
+            if (hp <= 0)
+            {
+                // Destroy(gameObject);
+            }
+        }
     }
 }
