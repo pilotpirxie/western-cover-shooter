@@ -77,6 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1648749b82f497c49be8799fbba8edfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particle: {fileID: 956586397966674448, guid: 630fd0632a71cc24193b2facfc69d802, type: 3}
 --- !u!23 &8319053732711431262
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainCharacterController : MonoBehaviour
@@ -40,9 +41,13 @@ public class MainCharacterController : MonoBehaviour
     [SerializeField] private Image blood1;
     [SerializeField] private Image blood2;
 
+    [SerializeField] private GameObject background;
+    [SerializeField] private Text statusText;
+    
     private void Start()
     {
         InvokeRepeating("Heal", 1f, 10f);
+        InvokeRepeating("AddAmmo", 1f, 0.3f);
     }
 
     void Update()
@@ -80,10 +85,9 @@ public class MainCharacterController : MonoBehaviour
             bullets--;
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && !isReloading)
+        if (Input.GetKeyDown(KeyCode.R) && !isReloading && bullets < 10)
         {
             isReloading = true;
-            Invoke("FinishReloading", 3f);
         }
         
         if (Input.GetKey(KeyCode.W)) characterController.Move(transform.forward * (Time.deltaTime * currentSpeed));
@@ -110,12 +114,6 @@ public class MainCharacterController : MonoBehaviour
         characterController.Move(playerVelocity * Time.deltaTime);
     }
 
-    private void FinishReloading()
-    {
-        isReloading = false;
-        bullets = maxBullets;
-    }
-
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("EnemyBullet"))
@@ -127,13 +125,44 @@ public class MainCharacterController : MonoBehaviour
             
             if (hp <= 0)
             {
+                statusText.text = "(GAME OVER)";
+                background.SetActive(true);
+                Invoke("GoToMainMenu", 3f);
                 // Destroy(gameObject);
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Horse"))
+        {
+            statusText.text = "(YOU WIN)";
+            background.SetActive(true);
+            Invoke("GoToMainMenu", 3f);
         }
     }
 
     private void Heal()
     {
         if (hp < 4) hp++;
+    }
+
+    private void GoToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private void AddAmmo()
+    {
+        if (bullets < 10 && isReloading)
+        {
+            bullets++;
+        }
+
+        if (bullets >= 10 && isReloading)
+        {
+            isReloading = false;
+        }
     }
 }

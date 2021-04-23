@@ -79,5 +79,9 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 7973158540003256641, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
+      propertyPath: particle
+      value: 
+      objectReference: {fileID: 956586397966674448, guid: 630fd0632a71cc24193b2facfc69d802, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65322e25c04da3549804e4c8fa034b97, type: 3}
