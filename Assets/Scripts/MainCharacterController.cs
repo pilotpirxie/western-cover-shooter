@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -43,6 +42,9 @@ public class MainCharacterController : MonoBehaviour
 
     [SerializeField] private GameObject background;
     [SerializeField] private Text statusText;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootClip;
+    [SerializeField] private AudioClip reloadClip;
     
     private void Start()
     {
@@ -80,6 +82,9 @@ public class MainCharacterController : MonoBehaviour
             {
                 GameObject newBall = Instantiate(bulletPrefab, instantiateTransform.position, transform.rotation);
                 newBall.GetComponent<Rigidbody>().velocity = (hit.point - instantiateTransform.position).normalized * 50f;
+                
+                audioSource.pitch = 1 + Random.Range(-0.1f, 0.1f);
+                audioSource.PlayOneShot(shootClip);
             }
 
             bullets--;
@@ -155,12 +160,13 @@ public class MainCharacterController : MonoBehaviour
 
     private void AddAmmo()
     {
-        if (bullets < 10 && isReloading)
+        if (bullets < maxBullets && isReloading)
         {
+            audioSource.PlayOneShot(reloadClip);
             bullets++;
         }
 
-        if (bullets >= 10 && isReloading)
+        if (bullets >= maxBullets && isReloading)
         {
             isReloading = false;
         }

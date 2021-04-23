@@ -91,15 +91,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 3
-  maxBullets: 5
-  bullets: 5
+  maxBullets: 6
+  bullets: 6
   isReloading: 0
   player: {fileID: 0}
   shootRadius: 100
   bulletPrefab: {fileID: 8673300071394289377, guid: 2b7907df0774c9c4ba6fb8ae8e7dd7fc, type: 3}
   instantiateTransform: {fileID: 7766448498284131359}
   shootInterval: 0.5
-  particle: {fileID: 956586397966674448, guid: 630fd0632a71cc24193b2facfc69d802, type: 3}
+  audioSource: {fileID: 0}
+  shootClip: {fileID: 8300000, guid: 926bde7ca8646614195f09dfbc9bc105, type: 3}
+  reloadClip: {fileID: 8300000, guid: 8f28cf840793180459438c145dd7a179, type: 3}
 --- !u!95 &5389807835637274003
 Animator:
   serializedVersion: 3

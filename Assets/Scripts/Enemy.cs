@@ -15,6 +15,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform instantiateTransform;
     [SerializeField] private float shootInterval = 0.25f;
     
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootClip;
+    [SerializeField] private AudioClip reloadClip;
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -59,16 +62,21 @@ public class Enemy : MonoBehaviour
                 GameObject newBall = Instantiate(bulletPrefab, instantiateTransform.position, transform.rotation);
                 newBall.transform.LookAt(target);
                 newBall.GetComponent<Rigidbody>().velocity = (hit.point - instantiateTransform.position).normalized * 50f;
+                
+                audioSource.pitch = 1 + Random.Range(-0.1f, 0.1f);
+                audioSource.PlayOneShot(shootClip);
             }
             
             bullets--;
         }
-        else
+        
+        if (bullets <= 0)
         {
             if (!isReloading)
             {
                 isReloading = true;
                 Invoke("FinishReloading", 3f);
+                audioSource.PlayOneShot(reloadClip);
             }
         }
     }

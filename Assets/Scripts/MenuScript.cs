@@ -9,6 +9,8 @@ public class MenuScript : MonoBehaviour
     [SerializeField] private GameObject tip;
     [SerializeField] private GameObject continueText;
     [SerializeField] private GameObject fadeIn;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip menuSound;
     
     void Update()
     {
@@ -16,6 +18,7 @@ public class MenuScript : MonoBehaviour
         {
             if (isMenuShown)
             {
+                audioSource.PlayOneShot(menuSound);
                 fadeIn.SetActive(true);
                 Invoke("LoadGameplay", 4f);
             }
@@ -25,6 +28,7 @@ public class MenuScript : MonoBehaviour
                 background.SetActive(isMenuShown);
                 tip.SetActive(isMenuShown);
                 continueText.SetActive(isMenuShown);
+                audioSource.PlayOneShot(menuSound);
             }
         }
 
@@ -34,6 +38,7 @@ public class MenuScript : MonoBehaviour
             background.SetActive(isMenuShown);
             tip.SetActive(isMenuShown);
             continueText.SetActive(isMenuShown);
+            audioSource.PlayOneShot(menuSound);
         }
     }
 
