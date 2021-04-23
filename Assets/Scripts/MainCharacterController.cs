@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainCharacterController : MonoBehaviour
 {
@@ -31,7 +32,19 @@ public class MainCharacterController : MonoBehaviour
     [SerializeField] private int maxBullets = 5;
     [SerializeField] private int bullets = 5;
     [SerializeField] private bool isReloading = false;
+
+    [SerializeField] private Text reloadingText;
+    [SerializeField] private Text bulletCounter;
     
+    [SerializeField] private Image blood0;
+    [SerializeField] private Image blood1;
+    [SerializeField] private Image blood2;
+
+    private void Start()
+    {
+        InvokeRepeating("Heal", 1f, 10f);
+    }
+
     void Update()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -86,6 +99,13 @@ public class MainCharacterController : MonoBehaviour
         cameraAnimator.SetBool("isZooming", Input.GetKey(KeyCode.Mouse1));
         crosshairAnimator.SetBool("isZooming", Input.GetKey(KeyCode.Mouse1));
         
+        reloadingText.gameObject.SetActive(isReloading);
+        bulletCounter.text = "x" + bullets;
+        
+        blood0.gameObject.SetActive(hp < 4);
+        blood1.gameObject.SetActive(hp < 3);
+        blood2.gameObject.SetActive(hp < 2);
+        
         playerVelocity.y += gravityValue * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
     }
@@ -101,11 +121,19 @@ public class MainCharacterController : MonoBehaviour
         if (other.gameObject.CompareTag("EnemyBullet"))
         {
             hp--;
+            cameraAnimator.ResetTrigger("shake");
+            cameraAnimator.SetTrigger("shake");
 
+            
             if (hp <= 0)
             {
                 // Destroy(gameObject);
             }
         }
+    }
+
+    private void Heal()
+    {
+        if (hp < 4) hp++;
     }
 }
